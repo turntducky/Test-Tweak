@@ -1,0 +1,9 @@
+Package: com.ducksrepo.respringtest
+Name: Respringtest
+Depends: mobilesubstrate, preferenceloader
+Version: 1.0.0
+Architecture: iphoneos-arm
+Description: An awesome Cydia Substrate tweak.
+Maintainer: Turnt Ducky
+Author: Turnt Ducky
+Section: Tweaks
