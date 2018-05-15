@@ -7,16 +7,12 @@ static NSString *nsNotificationString = @"com.ducksrepo.respringtest/preferences
 
 static bool popup;
 
-inline bool GetPrefBool(NSString *key) {
-        return [[[NSDictionary dictionaryWithContentsOfFile:PLIST_PATH] valueForKey:key] boolValue];
-}
-
 @interface NSUserDefaults (respringtest)
 - (id)objectForKey:(NSString *)key inDomain:(NSString *)domain;
 - (void)setObject:(id)value forKey:(NSString *)key inDomain:(NSString *)domain;
 @end
 @interface FBSystemService : NSObject
-        +(id)sharedInstance
+        +(id)sharedInstance;
         -(void)exitAndRelaunch:(BOOL)arg1;
 @end
 @interface SpringBoard : NSObject
