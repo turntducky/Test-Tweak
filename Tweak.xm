@@ -2,6 +2,9 @@
 #import <UIKit/UIKit.h>
 #import <substrate.h>
 
+static NSString *nsDomainString = @"com.ducksrepo.respringtestprefs";
+static NSString *nsNotificationString = @"com.ducksrepo.respringtest/preferences.changed";
+
 static bool popup;
 static bool FullStatusTime;
 static bool infinate;
@@ -9,32 +12,28 @@ static bool nostoreupdates;
 static bool nocydiaads;
 static bool dictation;
 
-#define PLIST_PATH @"/var/mobile/Library/Preferences/com.ducksrepo.entry.plist"
-
 inline bool GetPrefBool(NSString *key) {
         return [[[NSDictionary dictionaryWithContentsOfFile:PLIST_PATH] valueForKey:key] boolValue];
 }
-//Start respring
-@interface FBSystemService : NSObject
-+(id)sharedInstance;
-- (void)exitAndRelaunch:(bool)arg1;
+
+@interface NSUserDefaults (respringtest)
+- (id)objectForKey:(NSString *)key inDomain:(NSString *)domain;
+- (void)setObject:(id)value forKey:(NSString *)key inDomain:(NSString *)domain;
 @end
-
-static void RespringDevice()
-{
-    [[%c(FBSystemService) sharedInstance] exitAndRelaunch:YES];
-}
-
-%ctor
-{
-    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)RespringDevice, CFSTR("com.ducksrepo.respringtest/respring"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
-}
-//End respring function
+@interface FBSystemService : NSObject
+        +(id)sharedInstance
+        -(void)exitAndRelaunch:(BOOL)arg1;
+@end
+@interface SpringBoard : NSObject
+        - (void)_relaunchSpringBoardNow;
+        +(id)sharedInstance;
+    -(id)_accessibilityFrontMostApplication;
+    -(void)clearMenuButtonTimer;
+@end
 
 //Enables a respring popup
 %hook SpringBoard
-
--(void)applicationDidFinishLaunching:(id)application{
+- (void)applicationDidFinishLaunching:(id)application{
 if(popup){
     %orig;
 
@@ -125,3 +124,39 @@ else return YES;
 }
 %end
 //To be continued..
+
+static void notificationCallback(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
+	NSNumber *n = (NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:@"popup" inDomain:nsDomainString];
+	NSNumber *o = (NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:@"FullStatusTime" inDomain:nsDomainString];
+	NSNumber *p = (NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:@"infinate" inDomain:nsDomainString];
+	NSNumber *e = (NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:@"nostoreupdates" inDomain:nsDomainString];
+	NSNumber *m = (NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:@"nocydiaads" inDomain:nsDomainString];
+	NSNumber *z = (NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:@"dictation" inDomain:nsDomainString];
+
+	popup = (n)? [n boolValue]:NO;
+	FullStatusTime = (o)? [o boolValue]:NO;
+	infinate = (p) ? [p boolValue] : NO;
+	nostoreupdates = (e) ? [e boolValue] : NO;
+	nocydiaads = (m) ? [m boolValue] : NO;
+	dictation = (z) ? [z boolValue] : NO;
+}
+
+static void respring() {
+	SpringBoard *sb = (SpringBoard *)[UIApplication sharedApplication];
+  	if ([sb respondsToSelector:@selector(_relaunchSpringBoardNow)]) {
+    	[sb _relaunchSpringBoardNow];
+  	} else if (%c(FBSystemService)) {
+    	[[%c(FBSystemService) sharedInstance] exitAndRelaunch:YES];
+  	}
+}
+
+%ctor {
+  notificationCallback(NULL, NULL, NULL, NULL, NULL);
+	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
+		NULL,
+		notificationCallback,
+		(CFStringRef)nsNotificationString,
+		NULL,
+		CFNotificationSuspensionBehaviorCoalesce);
+	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)respring, CFSTR("com.ducksrepo.respringtest/respring"), NULL, 0);
+}
