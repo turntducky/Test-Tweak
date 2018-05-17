@@ -7,19 +7,19 @@ static NSString *nsNotificationString = @"com.ducksrepo.testtweak/preferences.ch
 
 static bool popup;
 
-@interface NSUserDefaults (testtweak)
+@interface NSUserDefaults (TestTweak)
 - (id)objectForKey:(NSString *)key inDomain:(NSString *)domain;
 - (void)setObject:(id)value forKey:(NSString *)key inDomain:(NSString *)domain;
 @end
 @interface FBSystemService : NSObject
-        +(id)sharedInstance;
-        -(void)exitAndRelaunch:(BOOL)arg1;
+	+(id)sharedInstance;
+	-(void)exitAndRelaunch:(BOOL)arg1;
 @end
 @interface SpringBoard : NSObject
-        - (void)_relaunchSpringBoardNow;
-        +(id)sharedInstance;
-    -(id)_accessibilityFrontMostApplication;
-    -(void)clearMenuButtonTimer;
+	- (void)_relaunchSpringBoardNow;
+	+(id)sharedInstance;
+  -(id)_accessibilityFrontMostApplication;
+  -(void)clearMenuButtonTimer;
 @end
 
 //Enables a respring popup
@@ -57,7 +57,7 @@ static void respring() {
 }
 
 %ctor {
-  notificationCallback(NULL, NULL, NULL, NULL, NULL);
+	notificationCallback(NULL, NULL, NULL, NULL, NULL);
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
 		NULL,
 		notificationCallback,
