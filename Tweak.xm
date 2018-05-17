@@ -6,6 +6,7 @@ static NSString *nsDomainString = @"com.ducksrepo.testtweakprefs";
 static NSString *nsNotificationString = @"com.ducksrepo.testtweak/preferences.changed";
 
 static bool popup;
+static bool nocydiaads;
 
 @interface NSUserDefaults (TestTweak)
 - (id)objectForKey:(NSString *)key inDomain:(NSString *)domain;
@@ -41,10 +42,30 @@ else %orig;
 }
 %end
 
+//Disable Cydia ads (IDK IF THIS WORKS FOR IOS 11 ITS JUST A SMALL EXAMPLE FOR MULTIPLE TOGGLES)
+
+@interface CyteWebView : UIWebView
+@end
+
+%hook CyteWebView
+
+- (void)_updateViewSettings {
+if(nocydiaads) {
+    %orig;
+
+    // Stolen from Flame, no idea what this does, really
+    [self stringByEvaluatingJavaScriptFromString:@"var child = document.getElementsByClassName('spots'); while(child[0]) child[0].parentNode.removeChild(child[0]);"];
+}
+else %orig;
+}
+%end
+
 static void notificationCallback(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
 	NSNumber *n = (NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:@"popup" inDomain:nsDomainString];
+	NSNumber *b = (NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:@"nocydiaads" inDomain:nsDomainString];
 
 	popup = (n)? [n boolValue]:NO;
+	nocydiaads = (b)? [b boolValue]:NO;
 }
 
 static void respring() {
