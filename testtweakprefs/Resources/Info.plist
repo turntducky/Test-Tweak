@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>Master Tweak</string>
+	<string>TestTweakPrefs</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.ducksrepo.testtweakprefs</string>
 	<key>CFBundleInfoDictionaryVersion</key>
