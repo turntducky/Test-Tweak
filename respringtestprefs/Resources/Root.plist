@@ -4,50 +4,50 @@
 <dict>
 	<key>items</key>
 	<array>
-      <dict>
+			<dict>
               <key>cell</key>
               <string>PSGroupCell</string>
               <key>footerText</key>
               <string>Get a popup when your device does a successful respring.</string>
-     </dict>
-     <dict>
+		 </dict>
+		 <dict>
               <key>cell</key>
               <string>PSSwitchCell</string>
               <key>default</key>
               <true/>
               <key>defaults</key>
-              <string>com.ducksrepo.respringtestprefs</string>
+              <string>com.ducksrepo.testtweakprefs</string>
               <key>key</key>
               <string>popup</string>
               <key>label</key>
               <string>Enable popup</string>
               <key>PostNotificaton</key>
-              <string>com.ducksrepo.respring/preferences.changed</string>
-      </dict>
-      <dict>
+              <string>com.ducksrepo.testtweak/preferences.changed</string>
+		</dict>
+		<dict>
               <key>cell</key>
               <string>PSGroupCell</string>
-     </dict>
-     <dict>
+		</dict>
+		<dict>
               <key>cell</key>
               <string>PSTextCell</string>
               <key>label</key>
               <string>Made by Turnt Ducky.</string>
-     </dict>
-     <dict>
+		</dict>
+		<dict>
               <key>cell</key>
               <string>PSTextCell</string>
               <key>label</key>
               <string>Version 1.0.1</string>
-    </dict>
-    <dict>
+		</dict>
+		<dict>
               <key>cell</key>
-      	      <string>PSGroupCell</string>
-      	      <key>footerText</key>
-      	      <string>Resprings your device</string>
+      				<string>PSGroupCell</string>
+      				<key>footerText</key>
+      				<string>Resprings your device</string>
     </dict>
     <dict>
-    	      <key>cell</key>
+    					<key>cell</key>
               <string>PSButtonCell</string>
               <key>action</key>
               <string>respring</string>
@@ -56,6 +56,6 @@
     </dict>
 	</array>
 	<key>title</key>
-	<string>Duck's Test</string>
+	<string>Master tweak</string>
 </dict>
 </plist>
