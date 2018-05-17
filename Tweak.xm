@@ -2,12 +2,12 @@
 #import <UIKit/UIKit.h>
 #import <substrate.h>
 
-static NSString *nsDomainString = @"com.ducksrepo.respringtestprefs";
-static NSString *nsNotificationString = @"com.ducksrepo.respringtest/preferences.changed";
+static NSString *nsDomainString = @"com.ducksrepo.testtweakprefs";
+static NSString *nsNotificationString = @"com.ducksrepo.testtweak/preferences.changed";
 
 static bool popup;
 
-@interface NSUserDefaults (respringtest)
+@interface NSUserDefaults (testtweak)
 - (id)objectForKey:(NSString *)key inDomain:(NSString *)domain;
 - (void)setObject:(id)value forKey:(NSString *)key inDomain:(NSString *)domain;
 @end
@@ -64,5 +64,5 @@ static void respring() {
 		(CFStringRef)nsNotificationString,
 		NULL,
 		CFNotificationSuspensionBehaviorCoalesce);
-	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)respring, CFSTR("com.ducksrepo.respringtest/respring"), NULL, 0);
+	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)respring, CFSTR("com.ducksrepo.testtweak/respring"), NULL, 0);
 }
