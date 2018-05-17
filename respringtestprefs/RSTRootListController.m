@@ -1,9 +1,9 @@
-#include "RSTRootListController.h"
+#include "DTTRootListController.h"
 #include "notify.h"
 
-@implementation RSTRootListController
+@implementation DTTRootListController
 
-- (NSArray *)specifiers {
+- (NSArray *)specifiers{
 	if (!_specifiers) {
 		_specifiers = [[self loadSpecifiersFromPlistName:@"Root" target:self] retain];
 	}
@@ -12,7 +12,6 @@
 }
 
 - (void)respring:(id)sender {
-    //send notification to tweak
-    notify_post("com.ducksrepo.respring/respring");
+	notify_post("com.ducksrepo.testtweak/respring");
 }
 @end
