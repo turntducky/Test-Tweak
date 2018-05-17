@@ -1,6 +1,6 @@
 #import <Preferences/PSListController.h>
 
-@interface RSTRootListController : PSListController
+@interface DTTRootListController : PSListController
 
 @end
 
@@ -11,5 +11,5 @@
 
 static void RespringDevice()
 {
-    [[%c(FBSystemService) sharedInstance] exitAndRelaunch:YES];
+  [[%c(FBSystemService) sharedInstance] exitAndRelaunch:YES];
 }
