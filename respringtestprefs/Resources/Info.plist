@@ -5,9 +5,9 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>respringtestprefs</string>
+	<string>Master Tweak</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.ducksrepo.respringtestprefs</string>
+	<string>com.ducksrepo.testtweakprefs</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
@@ -19,6 +19,6 @@
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>NSPrincipalClass</key>
-	<string>RSTRootListController</string>
+	<string>DTTRootListController</string>
 </dict>
 </plist>
