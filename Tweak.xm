@@ -1,13 +1,18 @@
+//What all you import for your tweak
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <substrate.h>
+#import <QuartzCore/QuartzCore.h>
 
+//This is needed but never changes after you first put it in
 static NSString *nsDomainString = @"com.ducksrepo.testtweakprefs";
 static NSString *nsNotificationString = @"com.ducksrepo.testtweak/preferences.changed";
 
-static bool popup;
-static bool nocydiaads;
+//Pulls from plist
+/*[THIS IS NEEDED] each time you make a new plist part you need to static bool key */
+static bool popup;//gets from plist
 
+/*This is the user default call [ALL THAT NEED TO CHANGE IS "TestTweak" THAT NEEDS TO BE YOUR TWEAK NAME. DO NOT CHANGE ANYTHING ELSE]*/
 @interface NSUserDefaults (TestTweak)
 - (id)objectForKey:(NSString *)key inDomain:(NSString *)domain;
 - (void)setObject:(id)value forKey:(NSString *)key inDomain:(NSString *)domain;
@@ -16,6 +21,7 @@ static bool nocydiaads;
 	+(id)sharedInstance;
 	-(void)exitAndRelaunch:(BOOL)arg1;
 @end
+//This is part of the respring function
 @interface SpringBoard : NSObject
 	- (void)_relaunchSpringBoardNow;
 	+(id)sharedInstance;
@@ -23,51 +29,36 @@ static bool nocydiaads;
   -(void)clearMenuButtonTimer;
 @end
 
-//Enables a respring popup
-%hook SpringBoard
-- (void)applicationDidFinishLaunching:(id)application{
-if(popup){
-    %orig;
+//Respring popup
+%hook SpringBoard //hook what header you wanna tweak
+- (void)applicationDidFinishLaunching:(id)application{ //"-" indicates that the method is an instance method, as opposed to a class method "(void)" indicates the return type {This can be found with FLEXible or in headers}
+if(popup){ //This basically says "if popup is enabled then ..."
+    %orig; //Overrides what the original code was
 
-    UIAlertView *alert = [[UIAlertView alloc]
-    initWithTitle:@"Success"
-    message:@"Your device did a successful respring"
-    delegate:self
-    cancelButtonTitle:@"Okay"
-    otherButtonTitles:nil];
+    UIAlertView *alert = [[UIAlertView alloc] //Makes a UIAlert
+    initWithTitle:@"Success" //Puts what the title will be
+    message:@"Your device did a successful respring" //Text under the title
+    delegate:self//delegate is an object that acts on behalf of, or in coordination with, another object when that object encounters an event in a program
+    cancelButtonTitle:@"Okay" //Puts what the button says
+    otherButtonTitles:nil]; //Hides the other button
 
-    [alert show];
+    [alert show]; //Shows the alert
 }
-else %orig;
-}
-%end
-
-//Disable Cydia ads (IDK IF THIS WORKS FOR IOS 11 ITS JUST A SMALL EXAMPLE FOR MULTIPLE TOGGLES)
-
-@interface CyteWebView : UIWebView
-@end
-
-%hook CyteWebView
-
-- (void)_updateViewSettings {
-if(nocydiaads) {
-    %orig;
-
-    // Stolen from Flame, no idea what this does, really
-    [self stringByEvaluatingJavaScriptFromString:@"var child = document.getElementsByClassName('spots'); while(child[0]) child[0].parentNode.removeChild(child[0]);"];
-}
-else %orig;
+else {%orig;} //Says if popup isn't enabled then use the original code
 }
 %end
+//End respring popup
 
+//Calls for notificationCallback so it will get from plist that something was enabled or Disabled
 static void notificationCallback(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
+/*[THIS DOWN IS ALL NEEDED] if you add a plist you have to update this {change - to a letter or word} */
+//NSNumber *- = (NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:@"key" inDomain:nsDomainString];
 	NSNumber *n = (NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:@"popup" inDomain:nsDomainString];
-	NSNumber *b = (NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:@"nocydiaads" inDomain:nsDomainString];
-
+	
 	popup = (n)? [n boolValue]:NO;
-	nocydiaads = (b)? [b boolValue]:NO;
-}
 
+
+//Repring function
 static void respring() {
 	SpringBoard *sb = (SpringBoard *)[UIApplication sharedApplication];
   	if ([sb respondsToSelector:@selector(_relaunchSpringBoardNow)]) {
