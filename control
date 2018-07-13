@@ -1,9 +1,9 @@
 Package: com.ducksrepo.testtweak
-Name: TestTweak
+Name: Test Tweak
 Depends: mobilesubstrate
-Version: 0.0.1
+Version: 1.0.0
 Architecture: iphoneos-arm
-Description: A simple test tweak!
+Description: A simple test tweak for new tweak developers.
 Maintainer: Turnt Ducky
 Author: Turnt Ducky
 Section: Tweaks
